@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Mi Aplicación{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Mi Aplicación</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'review_list' %}">Inicio</a></li>
+                <!-- Agrega más enlaces según sea necesario -->
+            </ul>
+        </nav>
+    </header>
+    <main>
+        {% block content %}
+        <!-- Aquí se insertará el contenido específico de cada página -->
+        {% endblock %}
+    </main>
+    <footer>
+        <p>&copy; 2023 Mi Aplicación</p>
+    </footer>
+</body>
+</html>

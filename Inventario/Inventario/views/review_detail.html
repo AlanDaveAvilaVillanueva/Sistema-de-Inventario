@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Detalle de la Reseña</h1>
+<p><strong>Usuario:</strong> {{ object.usuario }}</p>
+<p><strong>Juego:</strong> {{ object.juego }}</p>
+<p><strong>Puntaje:</strong> {{ object.puntaje }}</p>
+<p><strong>Comentario:</strong> {{ object.comentario }}</p>
+<p><strong>Fecha:</strong> {{ object.fecha }}</p>
+<a href="{% url 'review_update' object.id %}">Editar</a>
+<a href="{% url 'review_delete' object.id %}">Eliminar</a>
+<a href="{% url 'review_list' %}">Volver a la lista</a>
+{% endblock %}

@@ -1,0 +1,10 @@
+
+.env
+SECRET_KEY:
+NAME: root
+USER: root
+DATABASE: invDB
+PASSWORD_DB: Cdefgab1357.
+PORT: 3306
+HOST: localhost
+

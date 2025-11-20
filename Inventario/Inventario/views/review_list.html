@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Lista de Reseñas</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Usuario</th>
+            <th>Juego</th>
+            <th>Puntaje</th>
+            <th>Comentario</th>
+            <th>Fecha</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for review in object_list %}
+        <tr>
+            <td>{{ review.usuario }}</td>
+            <td>{{ review.juego }}</td>
+            <td>{{ review.puntaje }}</td>
+            <td>{{ review.comentario|truncatechars:50 }}</td>
+            <td>{{ review.fecha }}</td>
+            <td>
+                <a href="{% url 'review_detail' review.id %}">Ver</a>
+                <a href="{% url 'review_update' review.id %}">Editar</a>
+                <a href="{% url 'review_delete' review.id %}">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{% url 'review_create' %}">Crear nueva reseña</a>
+{% endblock %}
