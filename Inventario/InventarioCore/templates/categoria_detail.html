@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Categoría: {{ object.nombre }}{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-body">
+    <h2 class="card-title">{{ object.nombre }}</h2>
+    <p class="card-text">{{ object.descripcion }}</p>
+    <div class="mt-3">
+      <a class="btn btn-primary" href="{% url 'categoria-update' object.pk %}">Editar</a>
+      <a class="btn btn-danger" href="{% url 'categoria-delete' object.pk %}">Eliminar</a>
+      <a class="btn btn-link" href="{% url 'categoria-list' %}">Volver a la lista</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,12 +1,25 @@
 from django.db import models
+from django.contrib.auth.hashers import make_password, check_password
+
 
 class Usuario(models.Model):
     username = models.CharField(max_length=150, unique=True)
     email = models.EmailField(unique=True)
+    password = models.CharField(max_length=255, default="")
     fecha_registro = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.username
+
+    def set_password(self, raw_password):
+        """Setea (y persiste) la contraseña hasheada para este usuario."""
+        self.password = make_password(raw_password)
+        # Use update_fields to avoid touching other fields if caller saved before
+        self.save(update_fields=['password'])
+
+    def check_password(self, raw_password):
+        """Verifica una contraseña en texto plano contra la almacenada."""
+        return check_password(raw_password, self.password)
 
 class Categoria(models.Model):
     nombre = models.CharField(max_length=100, unique=True)
@@ -41,3 +54,7 @@ class MovimientoInventario(models.Model):
 
     def __str__(self):
         return f'{self.tipo.capitalize()} - {self.producto.nombre} - {self.cantidad}'
+
+
+
+

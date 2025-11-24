@@ -1,22 +1,26 @@
-from models import *
 from rest_framework import serializers
+from .models import Usuario, Categoria, Producto, MovimientoInventario
 
-class UsuarioSerializers(serializers.ModelSerializer):
+
+class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
-        field = '__all__'
+        fields = '__all__'
 
-class CategoriaSerializers(serializers.ModelSerializer):
+
+class CategoriaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Categoria
-        field = '__all__'
+        fields = '__all__'
 
-class ProductoSerializers(serializers.ModelSerializer):
+
+class ProductoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Producto
-        field = '__all__'
-    
-class MovimientoInventarioSerializers(serializers.ModelSerializer):
+        fields = '__all__'
+
+
+class MovimientoInventarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = MovimientoInventario
-        field = '__all__'
+        fields = '__all__'

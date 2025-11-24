@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Formulario Usuario{% endblock %}
+
+{% block content %}
+<h2>{% if object %}Editar usuario{% else %}Crear usuario{% endif %}</h2>
+
+<form method="post" class="row g-3">
+  {% csrf_token %}
+  <div class="col-md-6">
+    {{ form.username.label_tag }}
+    {{ form.username }}
+  </div>
+  <div class="col-md-6">
+    {{ form.email.label_tag }}
+    {{ form.email }}
+  </div>
+  <div class="col-12">
+    <button class="btn btn-primary" type="submit">Guardar</button>
+    <a class="btn btn-secondary" href="{% url 'usuario-list' %}">Cancelar</a>
+  </div>
+</form>
+
+{% endblock %}

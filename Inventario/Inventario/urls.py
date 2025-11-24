@@ -16,45 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.http import HttpResponse
-from ..InventarioCore import views
-
-def home(request):
-    return HttpResponse("Template de ejemplo para la página de inicio.")
-
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('InventarioCore.urls')),
-    path('', home),  # <-- esto agrega una vista para la raíz
-
-    # Rutas para Usuarios
-    path('usuarios/', views.UsuarioListView.as_view(), name='usuario-list'),
-    path('usuarios/<int:pk>/', views.UsuarioDetailView.as_view(), name='usuario-detail'),
-    path('usuarios/create/', views.UsuarioCreateView.as_view(), name='usuario-create'),
-    path('usuarios/<int:pk>/update/', views.UsuarioUpdateView.as_view(), name='usuario-update'),
-    path('usuarios/<int:pk>/delete/', views.UsuarioDeleteView.as_view(), name='usuario-delete'),
-
-    # Rutas para las categorias
-    path('categorias/', views.CategoriaListView.as_view(), name='categoria-list'),
-    path('categorias/<int:pk>/', views.CategoriaDetailView.as_view(), name='categoria-detail'),
-    path('categorias/create/', views.CategoriaCreateView.as_view(), name='categoria-create'),
-    path('categorias/<int:pk>/update/', views.CategoriaUpdateView.as_view(), name='categoria-update'),
-    path('categorias/<int:pk>/delete/', views.CategoriaDeleteView.as_view(), name='categoria-delete'),
-
-    # Rutas para los productos
-    path('productos/', views.ProductoListView.as_view(), name='producto-list'),
-    path('productos/<int:pk>/', views.ProductoDetailView.as_view(), name='producto-detail'),
-    path('productos/create/', views.ProductoCreateView.as_view(), name='producto-create'),
-    path('productos/<int:pk>/update/', views.ProductoUpdateView.as_view(), name='producto-update'),
-    path('productos/<int:pk>/delete/', views.ProductoDeleteView.as_view(), name='producto-delete'),
-    
-    # Rutas para los movimientos de inventario
-    path('movimientos/', views.MovimientoInventarioListView.as_view(), name='movimientoinventario-list'),
-    path('movimientos/<int:pk>/', views.MovimientoInventarioDetailView.as_view(), name='movimientoinventario-detail'),
-    path('movimientos/create/', views.MovimientoInventarioCreateView.as_view(), name='movimientoinventario-create'),
-    path('movimientos/<int:pk>/update/', views.MovimientoInventarioUpdateView.as_view(), name='movimientoinventario-update'),
-    path('movimientos/<int:pk>/delete/', views.MovimientoInventarioDeleteView.as_view(), name='movimientoinventario-delete'),
+    path('', include('InventarioCore.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
 
     

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Eliminar Usuario{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-body">
+    <h2 class="card-title">Eliminar usuario: {{ object.username }}</h2>
+    <p>¿Estás seguro que deseas eliminar este usuario?</p>
+    <form method="post">
+      {% csrf_token %}
+      <button class="btn btn-danger" type="submit">Sí, eliminar</button>
+      <a class="btn btn-secondary" href="{% url 'usuario-detail' object.pk %}">Cancelar</a>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
