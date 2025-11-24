@@ -94,25 +94,4 @@ Visita `http://127.0.0.1:8000/` en el navegador.
 - OpenAPI schema: `/api/schema/`.
 - Login/Logout: `/accounts/login/`, `/accounts/logout/`.
 
-## Uso rápido
-
-- Buscar productos: `GET /productos/?q=termino`.
-- Paginación disponible en la lista de productos.
-
-## Seguridad y despliegue
-
-- No publiques `.env` ni credenciales. Añade `.env` a `.gitignore` si procede.
-- Para producción: `DEBUG = False`, configura `ALLOWED_HOSTS`, usa un servidor WSGI/ASGI y HTTPS.
-
-## Mejoras sugeridas
-
-- Migrar a `AbstractUser` si necesitas expandir el modelo de usuario.
-- Añadir tests automatizados.
-- Añadir Dockerfile/docker-compose para despliegue.
-- Documentación de la API más completa (Swagger/Redoc).
-
-
-
-
-
 
