@@ -12,10 +12,8 @@ class Usuario(models.Model):
         return self.username
 
     def set_password(self, raw_password):
-        """Setea (y persiste) la contraseña hasheada para este usuario."""
+        """Setea la contraseña hasheada usando Django's hasher."""
         self.password = make_password(raw_password)
-        # Use update_fields to avoid touching other fields if caller saved before
-        self.save(update_fields=['password'])
 
     def check_password(self, raw_password):
         """Verifica una contraseña en texto plano contra la almacenada."""

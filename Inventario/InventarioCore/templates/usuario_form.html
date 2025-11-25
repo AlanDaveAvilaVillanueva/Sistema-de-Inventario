@@ -10,11 +10,28 @@
   <div class="col-md-6">
     {{ form.username.label_tag }}
     {{ form.username }}
+    {% if form.username.errors %}
+      <div class="text-danger">{{ form.username.errors }}</div>
+    {% endif %}
   </div>
   <div class="col-md-6">
-    {{ form.email.label_tag }}
-    {{ form.email }}
+    {{ form.password.label_tag }}
+    {{ form.password }}
+    {% if form.password.errors %}
+      <div class="text-danger">{{ form.password.errors }}</div>
+    {% endif %}
+    <small class="form-text text-muted">{{ form.password.help_text }}</small>
   </div>
+  <div class="col-md-6">
+    {{ form.password_confirm.label_tag }}
+    {{ form.password_confirm }}
+    {% if form.password_confirm.errors %}
+      <div class="text-danger">{{ form.password_confirm.errors }}</div>
+    {% endif %}
+  </div>
+  {% if form.non_field_errors %}
+    <div class="col-12 alert alert-danger">{{ form.non_field_errors }}</div>
+  {% endif %}
   <div class="col-12">
     <button class="btn btn-primary" type="submit">Guardar</button>
     <a class="btn btn-secondary" href="{% url 'usuario-list' %}">Cancelar</a>

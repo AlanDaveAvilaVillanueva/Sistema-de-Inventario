@@ -14,6 +14,7 @@ from django.http import HttpResponse
 import csv
 from django.urls import reverse_lazy
 from django.shortcuts import render
+from django import forms
 
 class UsuarioViewSet(viewsets.ModelViewSet):
     queryset = Usuario.objects.all()
@@ -39,6 +40,37 @@ class MovimientoInventarioViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
 
+# -------- Formulario personalizado para Usuario con password ---------
+
+class UsuarioForm(forms.ModelForm):
+    """Formulario para crear/editar Usuario con contraseña."""
+    password = forms.CharField(
+        widget=forms.PasswordInput,
+        required=True,
+        label='Contraseña',
+        help_text='Ingresa una contraseña'
+    )
+    password_confirm = forms.CharField(
+        widget=forms.PasswordInput,
+        required=True,
+        label='Confirmar contraseña'
+    )
+
+    class Meta:
+        model = Usuario
+        fields = ['username']
+        labels = {'username': 'Usuario'}
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get('password')
+        password_confirm = cleaned_data.get('password_confirm')
+
+        if password and password != password_confirm:
+            raise forms.ValidationError('Las contraseñas no coinciden.')
+        return cleaned_data
+
+
 # -------- Vistas basadas en clases para renderizar templates (CRUD) ---------
 
 
@@ -55,15 +87,75 @@ class UsuarioDetailView(LoginRequiredMixin, generic.DetailView):
 
 class UsuarioCreateView(LoginRequiredMixin, generic.CreateView):
     model = Usuario
+    form_class = UsuarioForm
     template_name = 'usuario_form.html'
-    fields = ['username', 'email']
     success_url = reverse_lazy('usuario-list')
+
+    def form_valid(self, form):
+        """Guardar usuario con contraseña hasheada."""
+        # NO guardar aún (commit=False)
+        usuario = form.save(commit=False)
+        
+        # Obtener y validar contraseña
+        password = form.cleaned_data.get('password')
+        if password:
+            # Llamar a set_password para hashear
+            usuario.set_password(password)
+        
+        # AHORA guardar (con password ya hasheada)
+        usuario.save()
+        self.object = usuario
+        return super().form_valid(form)
 
 
 class UsuarioUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Usuario
     template_name = 'usuario_form.html'
-    fields = ['username', 'email']
+
+    def get_form_class(self):
+        """Retorna un formulario con contraseña opcional (solo para edición)."""
+        class UsuarioUpdateForm(forms.ModelForm):
+            password = forms.CharField(
+                widget=forms.PasswordInput,
+                required=False,
+                label='Contraseña',
+                help_text='Déjalo en blanco si no quieres cambiarla'
+            )
+            password_confirm = forms.CharField(
+                widget=forms.PasswordInput,
+                required=False,
+                label='Confirmar contraseña'
+            )
+
+            class Meta:
+                model = Usuario
+                fields = ['username']
+                labels = {'username': 'Usuario'}
+
+            def clean(self):
+                cleaned_data = super().clean()
+                password = cleaned_data.get('password')
+                password_confirm = cleaned_data.get('password_confirm')
+
+                if password and password != password_confirm:
+                    raise forms.ValidationError('Las contraseñas no coinciden.')
+                return cleaned_data
+
+        return UsuarioUpdateForm
+
+    def form_valid(self, form):
+        """Guardar usuario, actualizando contraseña si se proporciona."""
+        usuario = form.save(commit=False)
+        password = form.cleaned_data.get('password')
+        
+        # Solo cambiar contraseña si se proporciona
+        if password:
+            usuario.set_password(password)
+        
+        # Guardar
+        usuario.save()
+        self.object = usuario
+        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy('usuario-detail', kwargs={'pk': self.object.pk})
